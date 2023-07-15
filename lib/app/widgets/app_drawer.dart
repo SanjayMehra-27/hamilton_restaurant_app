@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:restaurant_app/app/modules/login/views/login_view.dart';
 
 import '../modules/home/views/home_view.dart';
 import '../modules/profile/views/profile_view.dart';
@@ -136,7 +137,14 @@ class AppDrawer extends StatelessWidget {
                   child: DrawerMenuItem(
                     icon: Icons.logout,
                     title: 'Logout',
-                    onTap: () {},
+                    onTap: () {
+                      Get.back();
+                      Get.off(
+                        () => const LoginView(),
+                        transition: Transition.fadeIn,
+                        duration: const Duration(milliseconds: 500),
+                      );
+                    },
                     showForwardArrow: false,
                   ),
                 ),

@@ -6,7 +6,7 @@
 //         "client_gender": null,
 //         "client_id": 1576839
 
-class LoginUserModel {
+class UserModel {
   String? clientName;
   String? mail;
   int? country;
@@ -15,7 +15,7 @@ class LoginUserModel {
   String? clientGender;
   int? clientId;
 
-  LoginUserModel(
+  UserModel(
       {this.clientName,
       this.mail,
       this.country,
@@ -24,7 +24,7 @@ class LoginUserModel {
       this.clientGender,
       this.clientId});
 
-  LoginUserModel.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     clientName = json['client_name'] ?? "";
     mail = json['mail'] ?? "";
     country = json['country'] ?? 0;

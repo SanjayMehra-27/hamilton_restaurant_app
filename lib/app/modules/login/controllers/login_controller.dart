@@ -7,7 +7,7 @@ import '../../../models/login_user_model.dart';
 import '../../home/views/home_view.dart';
 
 class LoginController extends GetxController {
-  final user = LoginUserModel().obs;
+  final user = UserModel().obs;
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
   final isLoading = false.obs;

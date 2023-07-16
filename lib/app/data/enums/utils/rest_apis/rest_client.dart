@@ -27,18 +27,50 @@ class RestClient {
    */
 
   // Login
-  Future<LoginUserModel> login(
+  Future<UserModel> login(
       {required String phone, required String password}) async {
-    LoginUserModel user = LoginUserModel();
+    UserModel user = UserModel();
     var body = {"phone_number": phone, "password": password};
     await netUtil.post(loginURL, body: body).then((value) async {
       try {
         if (value['user']["client_id"] != null) {
-          user = LoginUserModel.fromJson(value['user']);
+          user = UserModel.fromJson(value['user']);
           storage.write(kToken, "${value['token']}"); // store token
         }
       } catch (e) {
         GetX.Get.snackbar('Login', "${value['message']}",
+            snackPosition: GetX.SnackPosition.BOTTOM,
+            duration: const Duration(seconds: 3));
+      }
+    });
+    return user;
+  }
+
+  // Signup
+  Future<UserModel> signup(
+      {required String phone,
+      required String username,
+      required String password,
+      required String name,
+      required String email}) async {
+    UserModel user = UserModel();
+    var body = {
+      "Name": name,
+      "Email": email,
+      "phone_number": phone,
+      "Password": password,
+      "confirm_password": password,
+      "Country": 91,
+      "UserName": username
+    };
+    await netUtil.post(signUpURL, body: body).then((value) async {
+      try {
+        if (value['User']["client_id"] != null) {
+          user = UserModel.fromJson(value['User']);
+          storage.write(kToken, "${value['token']}"); // store token
+        }
+      } catch (e) {
+        GetX.Get.snackbar('Signup', "${value['message']}",
             snackPosition: GetX.SnackPosition.BOTTOM,
             duration: const Duration(seconds: 3));
       }

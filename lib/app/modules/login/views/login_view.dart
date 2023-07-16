@@ -276,10 +276,11 @@ class LoginView extends GetView<LoginController> {
                                   color: Colors.white,
                                 ),
                                 child: TextFormField(
+                                  controller: controller.emailTextController,
                                   decoration: const InputDecoration(
                                     prefixIcon:
                                         Icon(Icons.person, color: Colors.grey),
-                                    hintText: 'Email',
+                                    hintText: 'Email/Phone',
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.all(20),
                                   ),
@@ -307,6 +308,7 @@ class LoginView extends GetView<LoginController> {
                                   color: Colors.white,
                                 ),
                                 child: TextFormField(
+                                  controller: controller.passwordTextController,
                                   obscureText: true,
                                   decoration: const InputDecoration(
                                     prefixIcon:
@@ -367,19 +369,22 @@ class LoginView extends GetView<LoginController> {
                             ),
                             child: TextButton(
                               onPressed: () {
-                                Get.to(
-                                  () => const HomeView(),
-                                  binding: SignupBinding(),
-                                  transition: Transition.rightToLeft,
-                                  duration: const Duration(milliseconds: 200),
-                                );
+                                controller.login();
                               },
-                              child: const Text('Login',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  )),
+                              child: Obx(() => controller.isLoading.value
+                                  ? const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : const Text('Login',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ))),
                             ),
                           ),
                         ),

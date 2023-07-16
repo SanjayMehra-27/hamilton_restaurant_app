@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:restaurant_app/app/data/enums/app_anums.dart';
 import '../../../widgets/app_drawer.dart';
 import '../../../widgets/custom_app_bar_widget.dart';
 import '../../../widgets/restaurant_card_widget.dart';
@@ -36,70 +37,32 @@ class HomeView extends GetView<HomeController> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Row(
-                // scrollDirection: Axis.horizontal,
-                children: [
-                  // Dine In Tab
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      width: 126,
-                      height: 45,
-                      margin: const EdgeInsets.only(left: 20, right: 20),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF805FFE),
-                        borderRadius: BorderRadius.circular(6),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.05),
-                            blurRadius: 8,
-                            offset: Offset(0, 5),
-                          ),
-                        ],
+              child: Obx(() => Row(
+                    // scrollDirection: Axis.horizontal,
+                    children: [
+                      // Dine In Tab
+                      RestaurantTabWidget(
+                        text: 'Dine In',
+                        isSelected:
+                            controller.selectedRestaurantType.value == 1,
+                        onTap: () {
+                          controller.getRestaurants();
+                          controller.selectedRestaurantType.value = 1;
+                        },
                       ),
-                      child: const Center(
-                        child: Text(
-                          'Dine In',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
 
-                  // Pick Up Tab
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      width: 126,
-                      height: 45,
-                      margin: const EdgeInsets.only(left: 20, right: 20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.05),
-                            blurRadius: 8,
-                            offset: Offset(0, 5),
-                          ),
-                        ],
+                      // Pick Up Tab
+                      RestaurantTabWidget(
+                        text: 'Pick Up',
+                        isSelected:
+                            controller.selectedRestaurantType.value == 0,
+                        onTap: () {
+                          controller.getRestaurants();
+                          controller.selectedRestaurantType.value = 0;
+                        },
                       ),
-                      child: const Center(
-                        child: Text(
-                          'Pick Up',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                    ],
+                  )),
             ),
           ),
 
@@ -109,22 +72,83 @@ class HomeView extends GetView<HomeController> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: ListView(
-                children: const [
-                  // Restaurant Card
-                  RestaurantCardWidget(),
-                  RestaurantCardWidget(),
-                  RestaurantCardWidget(),
-                  RestaurantCardWidget(),
-                  RestaurantCardWidget(),
-                  RestaurantCardWidget(),
-                ],
-              ),
-            ),
+            child: Obx(() => Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: controller.isLoading.value
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: Color(0xFF805FFE),
+                          ),
+                        )
+                      : RefreshIndicator(
+                          backgroundColor: Colors.white,
+                          color: const Color(0xFF805FFE),
+                          onRefresh: () async {
+                            controller.getRestaurants();
+                          },
+                          child: ListView.builder(
+                            itemBuilder: (context, index) {
+                              return RestaurantCardWidget(
+                                restaurant: controller.restaurants[index],
+                              );
+                            },
+                            itemCount: controller.restaurants.length,
+                          ),
+                        ),
+                )),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class RestaurantTabWidget extends StatelessWidget {
+  const RestaurantTabWidget({
+    Key? key,
+    this.isSelected = false,
+    this.onTap,
+    required this.text,
+  }) : super(key: key);
+  final bool? isSelected;
+  final String text;
+  final Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        onTap?.call();
+      },
+      child: Container(
+        width: 126,
+        height: 45,
+        margin: const EdgeInsets.only(left: 20, right: 20),
+        decoration: BoxDecoration(
+          color: isSelected == true ? const Color(0xFF805FFE) : Colors.white,
+          borderRadius: BorderRadius.circular(6),
+          boxShadow: const [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.05),
+              blurRadius: 8,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: isSelected == true
+                ? const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  )
+                : const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+          ),
+        ),
       ),
     );
   }

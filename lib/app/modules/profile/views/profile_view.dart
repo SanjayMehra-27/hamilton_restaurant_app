@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:restaurant_app/app/data/enums/app_anums.dart';
+import 'package:restaurant_app/app/models/restaurant_model.dart';
 import '../../../widgets/app_drawer.dart';
 import '../../../widgets/custom_app_bar_widget.dart';
 import '../../../widgets/restaurant_card_widget.dart';
@@ -208,8 +209,15 @@ class ProfileView extends GetView<ProfileController> {
                       child: ListView.builder(
                           itemCount: 5,
                           itemBuilder: (context, index) {
-                            return const RestaurantCardWidget(
-                                type: RestaurantCardType.visited);
+                            return RestaurantCardWidget(
+                              type: RestaurantCardType.visited,
+                              restaurant: RestaurantModel(
+                                id: 1,
+                                nameEn: 'The Butcher Shop & Grill',
+                                nameAr: 'ذا بتشر شوب اند جريل',
+                                logo: 'https://i.imgur.com/5tj6S7O.png',
+                              ),
+                            );
                           }),
                     ),
                   ),

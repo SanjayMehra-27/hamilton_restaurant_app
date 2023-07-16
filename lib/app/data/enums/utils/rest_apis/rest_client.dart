@@ -7,6 +7,7 @@ import 'package:get/get.dart' as GetX;
 import 'package:get_storage/get_storage.dart';
 import 'package:restaurant_app/app/data/constants/app_constatnts.dart';
 import 'package:restaurant_app/app/data/enums/utils/rest_apis/endpoints.dart';
+import 'package:restaurant_app/app/models/restaurant_model.dart';
 import 'package:restaurant_app/app/models/user_profile_model.dart';
 
 import '../../../../models/login_user_model.dart';
@@ -100,5 +101,36 @@ class RestClient {
       }
     });
     return user;
+  }
+
+  /***
+   * RESTAURANT API's
+   */
+
+  // Get Restaurants
+  Future<List<RestaurantModel>> getRestaurants(
+      {int? restaurantType = 1}) async {
+    List<RestaurantModel> restaurants = [];
+    await netUtil
+        .get(
+            getRestaurantURL +
+                "?PickupAvailable=$restaurantType&AreaName=Kuwait",
+            options: Options(headers: {"userToken": "$token"}))
+        .then((value) async {
+      try {
+        if (value['message'] == 'Success') {
+          // customers =
+          //     List<Customer>.from(value["data"].map((x) => Customer.fromJson(x)));
+          restaurants = List<RestaurantModel>.from(
+              value['data'].map((e) => RestaurantModel.fromJson(e)));
+          return restaurants;
+        }
+      } catch (e) {
+        GetX.Get.snackbar('Restaurants', "${value['message']}",
+            snackPosition: GetX.SnackPosition.BOTTOM,
+            duration: const Duration(seconds: 3));
+      }
+    });
+    return restaurants;
   }
 }

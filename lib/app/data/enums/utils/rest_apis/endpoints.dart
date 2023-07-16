@@ -14,3 +14,4 @@ get loginURL => getURL('user/auth/login');
 get signUpURL => getURL('user/auth/SignUp');
 get getUserProfileURL =>
     getURL('user/profiles/get-profiles?ClientID=$userId&userid=$userId');
+get getRestaurantURL => getURL('user/mainpages/get-restaurants');

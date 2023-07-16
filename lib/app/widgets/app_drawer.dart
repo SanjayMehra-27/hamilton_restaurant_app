@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:restaurant_app/app/modules/login/views/login_view.dart';
 import 'package:restaurant_app/app/modules/profile/bindings/profile_binding.dart';
+import 'package:restaurant_app/app/modules/profile/controllers/profile_controller.dart';
 import 'package:restaurant_app/app/routes/app_pages.dart';
 
 import '../modules/home/views/home_view.dart';
@@ -82,8 +83,8 @@ class AppDrawer extends StatelessWidget {
                         margin: const EdgeInsets.only(top: 50, left: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               'Welcome',
                               style: TextStyle(
                                 color: Colors.white,
@@ -91,14 +92,18 @@ class AppDrawer extends StatelessWidget {
                                 fontWeight: FontWeight.normal,
                               ),
                             ),
-                            Text(
-                              'John Doe',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            Obx(() => Text(
+                                  Get.find<ProfileController>()
+                                          .userProfile
+                                          .value
+                                          .clientName ??
+                                      '',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
                           ],
                         ),
                       ),
@@ -123,7 +128,9 @@ class AppDrawer extends StatelessWidget {
                   title: 'View Restaurants',
                   onTap: () {
                     Get.back();
-                    Get.off(() => const HomeView());
+                    Get.offNamed(
+                      Routes.HOME,
+                    );
                   },
                 ),
                 const SizedBox(height: 13),

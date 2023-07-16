@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:restaurant_app/app/data/enums/app_anums.dart';
+import 'package:restaurant_app/app/models/restaurant_model.dart';
 import '../../../widgets/app_drawer.dart';
 import '../../../widgets/custom_app_bar_widget.dart';
 import '../../../widgets/restaurant_card_widget.dart';
@@ -16,6 +17,7 @@ class ProfileView extends GetView<ProfileController> {
     return Scaffold(
       drawer: const AppDrawer(),
       drawerScrimColor: Colors.transparent,
+      backgroundColor: Color(0xFFFFFFFF),
       body: Stack(
         children: [
           const StatusBarLinearBackgroundWidget(),
@@ -26,190 +28,201 @@ class ProfileView extends GetView<ProfileController> {
             top: 150,
             left: 0,
             right: 0,
-            child: Column(
-              children: [
-                const CircleAvatar(
-                  radius: 65,
-                  backgroundImage: AssetImage(
-                    'assets/images/profile.png',
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'John Doe',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 1),
-                const Text(
-                  '@johndoe',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 13),
-                const Text(
-                  """Obsessed with Fahim MD's, love to go shopping on weekends and loveee food #foodielife, eget aliquam nisl nisl eget.""",
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFFAAAAAA),
-                    overflow: TextOverflow.fade,
-                  ),
-                ),
-
-                const SizedBox(height: 17),
-                // Followers & Following
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: const [
-                        Text(
-                          'Followers',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xFF444444),
-                          ),
-                        ),
-                        SizedBox(height: 1),
-                        Text(
-                          '2.5K',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xFF444444),
-                          ),
-                        ),
-                      ],
+            child: Obx(
+              () => Column(
+                children: [
+                  const CircleAvatar(
+                    radius: 65,
+                    backgroundImage: AssetImage(
+                      'assets/images/profile.png',
                     ),
-                    const SizedBox(width: 30),
-                    Column(
-                      children: const [
-                        Text(
-                          'Following',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xFF444444),
-                          ),
-                        ),
-                        SizedBox(height: 1),
-                        Text(
-                          '1.2K',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xFF444444),
-                          ),
-                        ),
-                      ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    controller.userProfile.value.clientName ?? '',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
                     ),
-                  ],
-                ),
-                const SizedBox(height: 17),
-                // Follow & Message Buttons (Filled with Primary Color)
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                        width: Get.width * 0.45,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF805FFE),
-                          borderRadius: BorderRadius.circular(9),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Follow',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )),
-                    const SizedBox(width: 10),
-                    Container(
-                        width: Get.width * 0.3,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF5cc2e0),
-                          borderRadius: BorderRadius.circular(9),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Message',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )),
-                  ],
-                ),
-                const SizedBox(height: 17),
-                // Line Divider
-                Container(
-                  width: Get.width * 0.9,
-                  height: 1,
-                  color: const Color(0xFFE5E5E5),
-                ),
-
-                const SizedBox(height: 17),
-
-                // Rates, Visited & Favorites Tabs with count
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
+                  ),
+                  const SizedBox(height: 1),
+                  Text(
+                    '@${controller.userProfile.value.username ?? ''}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                  if (controller.userProfile.value.bio != null)
+                    const SizedBox(height: 13),
+                  Text(
+                    """${controller.userProfile.value.bio ?? ''}""",
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFFAAAAAA),
+                      overflow: TextOverflow.fade,
+                    ),
+                  ),
+                  if (controller.userProfile.value.bio != null)
+                    const SizedBox(height: 17),
+                  // Followers & Following
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      RestaurantCustomTab(
-                        title: 'Rates',
-                        count: '195',
-                        isActive: false,
-                        onTap: () {},
+                      Column(
+                        children: [
+                          const Text(
+                            'Followers',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xFF444444),
+                            ),
+                          ),
+                          const SizedBox(height: 1),
+                          Text(
+                            '${controller.userProfile.value.followlist?.follower ?? 0}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xFF444444),
+                            ),
+                          ),
+                        ],
                       ),
-                      RestaurantCustomTab(
-                        title: 'Visited',
-                        count: '300',
-                        isActive: true,
-                        onTap: () {},
-                      ),
-                      RestaurantCustomTab(
-                        title: 'Favorites',
-                        count: '50',
-                        isActive: false,
-                        onTap: () {},
+                      const SizedBox(width: 30),
+                      Column(
+                        children: [
+                          const Text(
+                            'Following',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xFF444444),
+                            ),
+                          ),
+                          const SizedBox(height: 1),
+                          Text(
+                            '${controller.userProfile.value.followlist?.following ?? 0}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xFF444444),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ),
+                  const SizedBox(height: 17),
+                  // Follow & Message Buttons (Filled with Primary Color)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          width: Get.width * 0.45,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF805FFE),
+                            borderRadius: BorderRadius.circular(9),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Follow',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                      const SizedBox(width: 10),
+                      Container(
+                          width: Get.width * 0.3,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF5cc2e0),
+                            borderRadius: BorderRadius.circular(9),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Message',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ],
+                  ),
+                  const SizedBox(height: 17),
+                  // Line Divider
+                  Container(
+                    width: Get.width * 0.9,
+                    height: 1,
+                    color: const Color(0xFFE5E5E5),
+                  ),
 
-                // List of Visited Restaurants
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  height: 300,
-                  child: ListView(
-                    children: const [
-                      // Restaurant Card
-                      RestaurantCardWidget(type: RestaurantCardType.visited),
-                      RestaurantCardWidget(type: RestaurantCardType.visited),
-                      RestaurantCardWidget(type: RestaurantCardType.visited),
-                      RestaurantCardWidget(type: RestaurantCardType.visited),
-                    ],
+                  const SizedBox(height: 17),
+
+                  // Rates, Visited & Favorites Tabs with count
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        RestaurantCustomTab(
+                          title: 'Rates',
+                          count: '195',
+                          isActive: false,
+                          onTap: () {},
+                        ),
+                        RestaurantCustomTab(
+                          title: 'Visited',
+                          count: '300',
+                          isActive: true,
+                          onTap: () {},
+                        ),
+                        RestaurantCustomTab(
+                          title: 'Favorites',
+                          count: '50',
+                          isActive: false,
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+
+                  // List of Visited Restaurants
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    height: 300,
+                    child: MediaQuery.removePadding(
+                      context: context,
+                      removeTop: true,
+                      child: ListView.builder(
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return RestaurantCardWidget(
+                              type: RestaurantCardType.visited,
+                              restaurant: RestaurantModel(
+                                id: 1,
+                                nameEn: 'The Butcher Shop & Grill',
+                                nameAr: 'ذا بتشر شوب اند جريل',
+                                logo: 'https://i.imgur.com/5tj6S7O.png',
+                              ),
+                            );
+                          }),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

@@ -1,0 +1,71 @@
+{
+    "client_id": 1576839,
+    "client_name": "Sanjay Mehra",
+    "client_phone": "8279233271",
+    "created_date": null,
+    "client_status": false,
+    "client_gender": null,
+    "password": "1234",
+    "mail": "mehra271198@gmail.com",
+    "birthDate": null,
+    "points": null,
+    "longitude": null,
+    "latitude": null,
+    "country": 91,
+    "savedTime": null,
+    "createdMethod": null,
+    "userId": null,
+    "restId": null,
+    "lastSeen": null,
+    "avatar": null,
+    "activationStep": null,
+    "walletBalance": null,
+    "realTimeChannel": null,
+    "freeQueue": null,
+    "subscription": null,
+    "subscriptionExpiredOn": null,
+    "totalQueue": null,
+    "AddedFreeQueue": false,
+    "LoginPassword": null,
+    "hasApp": false,
+    "carno": null,
+    "Cardetails": null,
+    "OTP": null,
+    "online": null,
+    "id": 39,
+    "Userid": 1576839,
+    "Username": "sanjay",
+    "Bio": null,
+    "setting": [
+        {
+            "id": 94,
+            "Country": "0",
+            "language": "0",
+            "Term_Of_Condition": 1,
+            "Chat_Messages": 0,
+            "Notification_Sound": 1,
+            "Profile_Private": 0,
+            "Queue_visible": 0,
+            "my_Order": 0,
+            "Seated": 0,
+            "Chat_Privicy": 0,
+            "Comment_From_Anyone": 0,
+            "Notification": 0,
+            "UserID": 1576839
+        }
+    ],
+    "connections": {
+        "follow_list": -1,
+        "block_list": -1,
+        "mute_list": -1
+    },
+    "userconnections": {
+        "follow_list": -1,
+        "block_list": -1,
+        "mute_list": -1
+    },
+    "followlist": {
+        "following": 0,
+        "follower": 0
+    }
+}

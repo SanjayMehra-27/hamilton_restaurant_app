@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/app/models/restaurant_model.dart';
 
 import '../data/enums/app_anums.dart';
 
@@ -6,8 +7,11 @@ class RestaurantCardWidget extends StatelessWidget {
   const RestaurantCardWidget({
     Key? key,
     this.type = RestaurantCardType.dinein,
+    required this.restaurant,
   }) : super(key: key);
   final RestaurantCardType? type;
+  final RestaurantModel restaurant;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,10 +50,21 @@ class RestaurantCardWidget extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Image.asset(
-                'assets/images/google_logo.png',
-                fit: BoxFit.cover,
-              ),
+              child: restaurant.logo != null && restaurant.logo!.isNotEmpty
+                  ? Image.network(
+                      restaurant.logo!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/images/restaurant_placeholder.png',
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    )
+                  : Image.asset(
+                      'assets/images/restaurant_placeholder.png',
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
 
@@ -62,9 +77,9 @@ class RestaurantCardWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Restaurant Name
-                  const Text(
-                    'Restaurant Name',
-                    style: TextStyle(
+                  Text(
+                    restaurant.nameEn ?? '',
+                    style: const TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 18,
                       color: Color(0xFF444444),
@@ -85,20 +100,20 @@ class RestaurantCardWidget extends StatelessWidget {
 
                   if (type == RestaurantCardType.dinein)
                     // Address
-                    const Text(
-                      'Kuwait, Kuwait City',
-                      style: TextStyle(
+                    Text(
+                      restaurant.address ?? '',
+                      style: const TextStyle(
                         fontWeight: FontWeight.w300,
                         fontSize: 11,
                         color: Color(0xFF4C4C4C),
                       ),
                     ),
-                  SizedBox(height: 7),
+                  if (restaurant.address != null) const SizedBox(height: 7),
                   if (type == RestaurantCardType.dinein)
                     // Status
-                    const Text(
-                      'Welcome now',
-                      style: TextStyle(
+                    Text(
+                      restaurant.foodTypeEN ?? '',
+                      style: const TextStyle(
                         fontWeight: FontWeight.w300,
                         fontSize: 13,
                         color: Color(0xFF98e286),
@@ -111,16 +126,16 @@ class RestaurantCardWidget extends StatelessWidget {
                       padding: const EdgeInsets.all(12.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             Icons.star,
                             color: Color(0xFFFFC107),
                             size: 18,
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Text(
-                            '4.9',
-                            style: TextStyle(
+                            restaurant.rating?.toStringAsPrecision(2) ?? '0.0',
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),

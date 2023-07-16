@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:restaurant_app/app/modules/home/controllers/home_controller.dart';
+import 'package:restaurant_app/app/modules/profile/controllers/profile_controller.dart';
+import 'package:restaurant_app/app/services/push_notification_service.dart';
 
 class CustomAppBar extends GetView<HomeController> {
   const CustomAppBar({
@@ -102,7 +104,16 @@ class CustomAppBar extends GetView<HomeController> {
                   child: Column(
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          String deviceToken =
+                              await PushNotificationService().getDeviceToken();
+                          String title =
+                              "Hello! ${Get.find<ProfileController>().userProfile.value.clientName ?? ''}";
+                          PushNotificationService().sendOneToOneNotification(
+                              [deviceToken],
+                              title: title,
+                              body: "Welcome to Hamilton Restaurant App");
+                        },
                         icon: const Icon(
                           Icons.settings,
                           color: Colors.white,

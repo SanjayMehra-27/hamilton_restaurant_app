@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:restaurant_app/app/modules/login/views/login_view.dart';
+import 'package:restaurant_app/app/modules/profile/bindings/profile_binding.dart';
+import 'package:restaurant_app/app/routes/app_pages.dart';
 
 import '../modules/home/views/home_view.dart';
 import '../modules/profile/views/profile_view.dart';
@@ -54,7 +56,9 @@ class AppDrawer extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     Get.back();
-                    Get.off(() => const ProfileView());
+                    Get.offNamed(
+                      Routes.PROFILE,
+                    );
                   },
                   child: Row(
                     children: [
@@ -128,7 +132,9 @@ class AppDrawer extends StatelessWidget {
                   title: 'View Profile',
                   onTap: () {
                     Get.back();
-                    Get.off(() => const ProfileView());
+                    Get.offNamed(
+                      Routes.PROFILE,
+                    );
                   },
                 ),
                 Expanded(child: Container()),

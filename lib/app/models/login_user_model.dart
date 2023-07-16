@@ -1,11 +1,3 @@
-//         "client_name": "Sanjay Mehra",
-//         "mail": "mehra271198@gmail.com",
-//         "country": 91,
-//         "client_status": false,
-//         "client_phone": "8279233271",
-//         "client_gender": null,
-//         "client_id": 1576839
-
 class UserModel {
   String? clientName;
   String? mail;

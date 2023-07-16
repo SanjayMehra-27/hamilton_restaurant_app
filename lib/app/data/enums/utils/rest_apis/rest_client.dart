@@ -7,6 +7,7 @@ import 'package:get/get.dart' as GetX;
 import 'package:get_storage/get_storage.dart';
 import 'package:restaurant_app/app/data/constants/app_constatnts.dart';
 import 'package:restaurant_app/app/data/enums/utils/rest_apis/endpoints.dart';
+import 'package:restaurant_app/app/models/user_profile_model.dart';
 
 import '../../../../models/login_user_model.dart';
 import 'network_util.dart';
@@ -36,6 +37,8 @@ class RestClient {
         if (value['user']["client_id"] != null) {
           user = UserModel.fromJson(value['user']);
           storage.write(kToken, "${value['token']}"); // store token
+          storage.write(
+              kUserId, user.clientId); // store client id for future use
         }
       } catch (e) {
         GetX.Get.snackbar('Login', "${value['message']}",
@@ -68,9 +71,30 @@ class RestClient {
         if (value['User']["client_id"] != null) {
           user = UserModel.fromJson(value['User']);
           storage.write(kToken, "${value['token']}"); // store token
+          storage.write(kUserId, user.clientId); // store id
         }
       } catch (e) {
         GetX.Get.snackbar('Signup', "${value['message']}",
+            snackPosition: GetX.SnackPosition.BOTTOM,
+            duration: const Duration(seconds: 3));
+      }
+    });
+    return user;
+  }
+
+  // Get User Profile
+  Future<UserProfileModel> getUserProfile() async {
+    UserProfileModel user = UserProfileModel();
+    await netUtil
+        .get(getUserProfileURL,
+            options: Options(headers: {"userToken": "${storage.read(kToken)}"}))
+        .then((value) async {
+      try {
+        if (value['success'] == true) {
+          user = UserProfileModel.fromJson(value['data'][0]);
+        }
+      } catch (e) {
+        GetX.Get.snackbar('Profile', "${value['message']}",
             snackPosition: GetX.SnackPosition.BOTTOM,
             duration: const Duration(seconds: 3));
       }

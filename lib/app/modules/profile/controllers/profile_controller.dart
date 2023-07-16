@@ -1,23 +1,23 @@
 import 'package:get/get.dart';
+import 'package:restaurant_app/app/data/enums/utils/rest_apis/rest_client.dart';
+import 'package:restaurant_app/app/models/user_profile_model.dart';
 
 class ProfileController extends GetxController {
-  //TODO: Implement ProfileController
+  final userProfile = UserProfileModel().obs;
+  final isLoading = false.obs;
 
-  final count = 0.obs;
+  RestClient restClient = RestClient();
+
   @override
-  void onInit() {
+  Future<void> onInit() async {
+    await getUserProfile();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  // Get User Profile
+  Future<void> getUserProfile() async {
+    isLoading.value = true;
+    userProfile.value = await restClient.getUserProfile();
+    isLoading.value = false;
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

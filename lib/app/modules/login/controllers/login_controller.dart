@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:restaurant_app/app/data/constants/app_constatnts.dart';
 import 'package:restaurant_app/app/modules/home/bindings/home_binding.dart';
+import 'package:restaurant_app/app/routes/app_pages.dart';
 
 import '../../../data/enums/utils/rest_apis/rest_client.dart';
 import '../../../models/login_user_model.dart';
@@ -14,6 +17,12 @@ class LoginController extends GetxController {
 
   // Rest Client
   final RestClient restClient = RestClient();
+  GetStorage box = GetStorage();
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
 
   Future<void> login() async {
     // Validate

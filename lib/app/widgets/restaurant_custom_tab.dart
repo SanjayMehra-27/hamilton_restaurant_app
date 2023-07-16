@@ -20,15 +20,17 @@ class RestaurantCustomTab extends StatelessWidget {
       child: Container(
         width: 132,
         height: 37,
-        margin: const EdgeInsets.only(left: 15),
+        margin: const EdgeInsets.only(left: 15, bottom: 10),
         decoration: BoxDecoration(
           color: isActive == true ? const Color(0xFF805FFE) : Colors.white,
           borderRadius: BorderRadius.circular(6),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.05),
+              color: isActive == true
+                  ? const Color(0xFF805FFE).withOpacity(0.5)
+                  : const Color(0xFFE5E5E5),
               blurRadius: 8,
-              offset: Offset(0, 5),
+              offset: const Offset(1, 5),
             ),
           ],
         ),

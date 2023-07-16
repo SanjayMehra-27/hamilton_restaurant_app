@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:restaurant_app/app/modules/home/views/home_view.dart';
 import 'package:restaurant_app/app/modules/signup/bindings/signup_binding.dart';
 import 'package:restaurant_app/app/modules/signup/views/signup_view.dart';
+import 'package:restaurant_app/app/routes/app_pages.dart';
 
 import '../controllers/login_controller.dart';
 
@@ -211,12 +212,7 @@ class LoginView extends GetView<LoginController> {
                     Expanded(
                       child: TextButton.icon(
                         onPressed: () {
-                          Get.to(
-                            () => const HomeView(),
-                            binding: SignupBinding(),
-                            transition: Transition.rightToLeft,
-                            duration: const Duration(milliseconds: 200),
-                          );
+                          Get.toNamed(Routes.HOME);
                         },
                         label: const Icon(Icons.arrow_forward_ios,
                             size: 16, color: Colors.white),
@@ -260,7 +256,7 @@ class LoginView extends GetView<LoginController> {
                         // Email textfield
                         Container(
                           margin: const EdgeInsets.only(
-                              top: 5, bottom: 0, left: 10, right: 10),
+                              top: 15, bottom: 14, left: 10, right: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -269,21 +265,53 @@ class LoginView extends GetView<LoginController> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               // Email textfield
-                              Container(
-                                margin: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                ),
+                              Form(
+                                key: controller.emailFormKey,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 child: TextFormField(
                                   controller: controller.emailTextController,
-                                  decoration: const InputDecoration(
-                                    prefixIcon:
-                                        Icon(Icons.person, color: Colors.grey),
-                                    hintText: 'Email/Phone',
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.all(20),
-                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter your email or phone';
+                                    } else if (!GetUtils.isEmail(value) &&
+                                        !GetUtils.isPhoneNumber(value)) {
+                                      return 'Please enter a valid email or phone';
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      prefixIcon: const Icon(Icons.person,
+                                          color: Colors.grey),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      hintText: 'Email/Phone',
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      contentPadding: const EdgeInsets.all(20),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      errorMaxLines: 1),
                                 ),
                               ),
                             ],
@@ -301,21 +329,47 @@ class LoginView extends GetView<LoginController> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               // Email textfield
-                              Container(
-                                margin: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                ),
+                              Form(
+                                key: controller.passwordFormKey,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 child: TextFormField(
                                   controller: controller.passwordTextController,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter your password';
+                                    } else if (value.length < 4) {
+                                      return 'Password must be at least 4 characters';
+                                    }
+                                  },
                                   obscureText: true,
-                                  decoration: const InputDecoration(
-                                    prefixIcon:
-                                        Icon(Icons.lock, color: Colors.grey),
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.all(20),
+                                    prefixIcon: const Icon(Icons.lock,
+                                        color: Colors.grey),
                                     hintText: 'Password',
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.all(20),
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide.none,
+                                    ),
                                   ),
                                 ),
                               ),

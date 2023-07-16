@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:restaurant_app/app/modules/login/views/login_view.dart';
 import 'package:restaurant_app/app/modules/profile/bindings/profile_binding.dart';
 import 'package:restaurant_app/app/modules/profile/controllers/profile_controller.dart';
@@ -151,6 +152,7 @@ class AppDrawer extends StatelessWidget {
                     icon: Icons.logout,
                     title: 'Logout',
                     onTap: () {
+                      GetStorage().erase();
                       Get.back();
                       Get.off(
                         () => const LoginView(),

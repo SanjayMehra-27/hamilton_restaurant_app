@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:restaurant_app/app/data/constants/app_constatnts.dart';
 import 'package:restaurant_app/app/modules/home/bindings/home_binding.dart';
-import 'package:restaurant_app/app/routes/app_pages.dart';
 
 import '../../../data/enums/utils/rest_apis/rest_client.dart';
 import '../../../models/login_user_model.dart';
@@ -14,6 +12,10 @@ class LoginController extends GetxController {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
   final isLoading = false.obs;
+
+  // Form Keys
+  final emailFormKey = GlobalKey<FormState>();
+  final passwordFormKey = GlobalKey<FormState>();
 
   // Rest Client
   final RestClient restClient = RestClient();
@@ -26,12 +28,7 @@ class LoginController extends GetxController {
 
   Future<void> login() async {
     // Validate
-    if (emailTextController.value.text.isEmpty) {
-      Get.snackbar('Error', 'Please enter email');
-      return;
-    }
-    if (passwordTextController.value.text.isEmpty) {
-      Get.snackbar('Error', 'Please enter password');
+    if (await validateForm() == false) {
       return;
     }
     try {
@@ -52,5 +49,16 @@ class LoginController extends GetxController {
       isLoading.value = false;
       Get.snackbar('Error', e.toString());
     }
+  }
+
+  // Validator
+  Future<bool> validateForm() async {
+    if (emailFormKey.currentState!.validate() &&
+        passwordFormKey.currentState!.validate()) {
+      emailFormKey.currentState!.save();
+      passwordFormKey.currentState!.save();
+      return true;
+    }
+    return false;
   }
 }

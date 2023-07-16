@@ -80,21 +80,32 @@ class HomeView extends GetView<HomeController> {
                             color: Color(0xFF805FFE),
                           ),
                         )
-                      : RefreshIndicator(
-                          backgroundColor: Colors.white,
-                          color: const Color(0xFF805FFE),
-                          onRefresh: () async {
-                            controller.getRestaurants();
-                          },
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              return RestaurantCardWidget(
-                                restaurant: controller.restaurants[index],
-                              );
-                            },
-                            itemCount: controller.restaurants.length,
-                          ),
-                        ),
+                      : controller.restaurants.length == 0
+                          ? const Center(
+                              child: Text(
+                                'No Restaurants Found',
+                                style: TextStyle(
+                                  color: Color(0xFF805FFE),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            )
+                          : RefreshIndicator(
+                              backgroundColor: Colors.white,
+                              color: const Color(0xFF805FFE),
+                              onRefresh: () async {
+                                controller.getRestaurants();
+                              },
+                              child: ListView.builder(
+                                itemBuilder: (context, index) {
+                                  return RestaurantCardWidget(
+                                    restaurant: controller.restaurants[index],
+                                  );
+                                },
+                                itemCount: controller.restaurants.length,
+                              ),
+                            ),
                 )),
           ),
         ],
